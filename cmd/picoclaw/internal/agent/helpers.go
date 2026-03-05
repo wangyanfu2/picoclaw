@@ -10,7 +10,6 @@ import (
 	"strings"
 
 	"github.com/chzyer/readline"
-
 	"github.com/sipeed/picoclaw/cmd/picoclaw/internal"
 	"github.com/sipeed/picoclaw/pkg/agent"
 	"github.com/sipeed/picoclaw/pkg/bus"
@@ -21,6 +20,11 @@ import (
 func agentCmd(message, sessionKey, model string, debug bool) error {
 	if sessionKey == "" {
 		sessionKey = "cli:default"
+	}
+
+	// If the user provides a plain name (no colon), treat it as a session label
+	if !strings.Contains(sessionKey, ":") {
+		sessionKey = fmt.Sprintf("agent:main:%s", sessionKey)
 	}
 
 	if debug {
